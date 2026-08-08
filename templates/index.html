@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Report a Problem — CivicSignal{% endblock %}
+{% block nav_citizen %}active{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Municipal Complaint Intake</p>
+    <h1>Tell us what's broken.<br>We'll route it to the right desk.</h1>
+    <p class="hero-sub">Describe the problem in your own words. Our system reads it, works out what kind of issue it is and how urgent it looks, then hands it to the department responsible.</p>
+  </div>
+
+  <div class="pipeline" role="img" aria-label="Complaint flows from citizen, through AI classification, to the assigned department">
+    <div class="pipeline-node" data-node="citizen">
+      <span class="node-dot"></span>
+      <span class="node-label">Citizen<br><small>submits report</small></span>
+    </div>
+    <div class="pipeline-track"><span class="pulse"></span></div>
+    <div class="pipeline-node" data-node="ai">
+      <span class="node-dot"></span>
+      <span class="node-label">AI Service<br><small>classify · prioritize · summarize</small></span>
+    </div>
+    <div class="pipeline-track"><span class="pulse" style="animation-delay:1.1s"></span></div>
+    <div class="pipeline-node" data-node="dept">
+      <span class="node-dot"></span>
+      <span class="node-label">Service Dept.<br><small>assigned &amp; tracked</small></span>
+    </div>
+  </div>
+</section>
+
+<section class="form-section">
+  <form id="complaint-form" class="ticket-form" novalidate>
+    <div class="field">
+      <label for="citizen_name">Your name <span class="req">*</span></label>
+      <input type="text" id="citizen_name" name="citizen_name" maxlength="100"
+        placeholder="e.g. Ayesha Khan" required>
+    </div>
+    <div class="field">
+      <label for="citizen_phone">Phone number <span class="req">*</span></label>
+      <input type="tel" id="citizen_phone" name="citizen_phone" maxlength="20"
+        placeholder="e.g. 0300-1234567" required>
+    </div>
+    <div class="field">
+      <label for="description">What's the problem? <span class="req">*</span></label>
+      <textarea id="description" name="description" rows="5" maxlength="800"
+        placeholder="e.g. There is a large water leak near the main road and traffic is becoming difficult." required></textarea>
+      <div class="field-hint"><span id="char-count">0</span> / 800</div>
+    </div>
+    <div class="field">
+      <label for="location">Location <span class="req">*</span></label>
+      <input type="text" id="location" name="location" maxlength="150"
+        placeholder="e.g. Main Road, near City Park, Sector 4" required>
+    </div>
+    <div class="field checkbox-field">
+      <input type="checkbox" id="image_flag" name="image_flag">
+      <label for="image_flag">A photo of the problem is available (image upload not required for this prototype)</label>
+    </div>
+    <button type="submit" class="btn-primary" id="submit-btn">
+      <span>Submit &amp; Analyze</span>
+    </button>
+    <p class="form-error" id="form-error" role="alert"></p>
+  </form>
+
+  <div class="result-panel" id="result-panel" hidden>
+    <div class="ticket" id="ticket-card">
+      <div class="ticket-head">
+        <span class="ticket-id" id="res-id">—</span>
+        <span class="priority-chip" id="res-priority">—</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-key">Category</span>
+        <span class="ticket-val" id="res-category">—</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-key">Assigned to</span>
+        <span class="ticket-val" id="res-dept">—</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-key">AI summary</span>
+        <span class="ticket-val" id="res-summary">—</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-key">AI confidence</span>
+        <span class="ticket-val" id="res-confidence">—</span>
+      </div>
+      <details class="ticket-explain">
+        <summary>How the AI reached this result</summary>
+        <p id="res-explanation">—</p>
+      </details>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/citizen.js') }}"></script>
+{% endblock %}

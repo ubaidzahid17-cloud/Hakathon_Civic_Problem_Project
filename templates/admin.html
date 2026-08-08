@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Service Desk — CivicSignal{% endblock %}
+{% block nav_admin %}active{% endblock %}
+
+{% block content %}
+<section class="admin-header">
+  <div>
+    <p class="eyebrow">Service Desk</p>
+    <h1>Complaint Dashboard</h1>
+  </div>
+  <button class="btn-ghost" id="refresh-btn">Refresh</button>
+</section>
+
+<section class="stat-strip" id="stat-strip">
+  <div class="stat-card"><span class="stat-num" id="stat-total">0</span><span class="stat-label">Total complaints</span></div>
+  <div class="stat-card"><span class="stat-num" id="stat-open">0</span><span class="stat-label">Open</span></div>
+  <div class="stat-card"><span class="stat-num" id="stat-progress">0</span><span class="stat-label">In progress</span></div>
+  <div class="stat-card"><span class="stat-num" id="stat-resolved">0</span><span class="stat-label">Resolved</span></div>
+  <div class="stat-card stat-card-critical"><span class="stat-num" id="stat-critical">0</span><span class="stat-label">Critical priority</span></div>
+  <div class="stat-card"><span class="stat-num" id="stat-rate">0%</span><span class="stat-label">Resolution rate</span></div>
+</section>
+
+<section class="charts-row">
+  <div class="chart-panel">
+    <h3>Complaints by category</h3>
+    <canvas id="chart-category"></canvas>
+  </div>
+  <div class="chart-panel">
+    <h3>Priority distribution</h3>
+    <canvas id="chart-priority"></canvas>
+  </div>
+</section>
+
+<section class="stats-detail" id="resolution-stats">
+  <h3>Resolution time statistics <small>(hours, resolved complaints only)</small></h3>
+  <div class="stats-grid" id="stats-grid">
+    <!-- populated by JS -->
+  </div>
+</section>
+
+<section class="filters">
+  <input type="text" id="filter-search" placeholder="Search description...">
+  <select id="filter-category"><option value="">All categories</option></select>
+  <select id="filter-priority"><option value="">All priorities</option></select>
+  <select id="filter-status"><option value="">All statuses</option></select>
+  <input type="text" id="filter-location" placeholder="Location contains...">
+  <button class="btn-ghost" id="clear-filters">Clear</button>
+</section>
+
+<section class="table-section">
+  <table class="complaint-table">
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Phone</th><th>Description</th><th>Category</th><th>Priority</th>
+        <th>Location</th><th>Department</th><th>Status</th><th>Filed</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="complaint-tbody">
+      <tr><td colspan="11" class="empty-row">Loading complaints…</td></tr>
+    </tbody>
+  </table>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
